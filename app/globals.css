@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #0b1220;
+  background: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #0b1220;
+  font-family: Inter, Manrope, Geist, Satoshi, ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(29, 78, 216, 0.18);
+}
+
+a,
+button {
+  text-underline-offset: 4px;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(29, 78, 216, 0.46);
+  outline-offset: 4px;
+}

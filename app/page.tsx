@@ -599,7 +599,7 @@ export default function Home() {
             The work spans business operations, customer success, sales
             operations, analytics, client delivery, and enterprise stakeholder
             management. Arete Systems helps teams move beyond AI curiosity and
-            into structured execution — with workflows, training,
+            into structured execution with workflows, training,
             accountability, and business outcomes at the centre.
           </p>
         </div>

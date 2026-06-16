@@ -366,7 +366,7 @@ export default function Home() {
             </p>
             <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-[1.05] text-navy md:text-6xl">
               Practical AI training and automation for teams that need better
-              execution — not more tools.
+              execution, not more tools.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slatecopy">
               I help leaders and teams turn AI from scattered experiments into

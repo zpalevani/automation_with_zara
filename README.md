@@ -50,3 +50,14 @@ Use Cloudflare Pages with the following settings:
 - Node.js version: 20 or newer
 
 The site is configured as a static export because it does not require server-side rendering, API routes, or runtime environment variables.
+
+## GitHub Pages Preview
+
+GitHub Pages must use the included GitHub Actions workflow, not `Deploy from a branch`.
+
+Use these GitHub repository settings:
+
+- Settings > Pages > Source: `GitHub Actions`
+- Production branch: `main`
+
+The workflow builds the static site into `out` and deploys that output to GitHub Pages.

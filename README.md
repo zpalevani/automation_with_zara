@@ -44,9 +44,9 @@ npm run build
 
 Use Cloudflare Pages with the following settings:
 
-- Framework preset: Next.js
+- Framework preset: Next.js (Static HTML Export)
 - Build command: `npm run build`
-- Output directory: `.next`
+- Output directory: `out`
 - Node.js version: 20 or newer
 
-If using Cloudflare's Next.js adapter or OpenNext, follow the current Cloudflare Pages Next.js deployment guidance for the selected runtime.
+The site is configured as a static export because it does not require server-side rendering, API routes, or runtime environment variables.

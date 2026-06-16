@@ -1,6 +1,6 @@
-# Zara AI Training & Automation Website
+# Arete Systems Website
 
-A polished one-page website for Zara's AI training and automation services, positioning the business around practical AI adoption, workflow automation, and team enablement.
+A polished one-page website for Arete Systems, positioning the business around operational excellence, practical AI adoption, workflow automation, and team enablement.
 
 ## Tech Stack
 

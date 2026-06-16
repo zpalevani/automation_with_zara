@@ -341,7 +341,7 @@ export default function Home() {
           className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-8"
         >
           <a href="#" className="text-base font-semibold text-navy">
-            Zara AI Training & Automation
+            Arete Systems
           </a>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-medium text-slatecopy">
             {navItems.map((item) => (
@@ -362,11 +362,11 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 sm:py-24 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-28">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-royal">
-              AI operations strategy
+              Operational excellence, powered by practical AI.
             </p>
             <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-[1.05] text-navy md:text-6xl">
-              Practical AI training and automation for teams that need better
-              execution, not more tools.
+              Arete Systems helps modern business teams turn AI into better
+              workflows, faster decisions, and stronger execution.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slatecopy">
               I help leaders and teams turn AI from scattered experiments into
@@ -588,19 +588,19 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div className="rounded-[2rem] bg-navy p-8 text-white shadow-soft">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gold">
-              About Zara
+              About Arete Systems
             </p>
             <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-5xl">
               Built by an operator, not a theorist.
             </h2>
           </div>
           <p className="text-lg leading-9 text-slatecopy">
-            Zara brings a practical operations lens to AI adoption. Her
-            background spans business operations, customer success, sales
+            Arete Systems brings a practical operations lens to AI adoption.
+            The work spans business operations, customer success, sales
             operations, analytics, client delivery, and enterprise stakeholder
-            management. She helps teams move beyond AI curiosity and into
-            structured execution — with workflows, training, accountability, and
-            business outcomes at the centre.
+            management. Arete Systems helps teams move beyond AI curiosity and
+            into structured execution — with workflows, training,
+            accountability, and business outcomes at the centre.
           </p>
         </div>
       </section>
@@ -646,9 +646,9 @@ export default function Home() {
       <footer className="bg-white px-5 py-10 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="font-semibold text-navy">Zara AI Training & Automation</p>
+            <p className="font-semibold text-navy">Arete Systems</p>
             <p className="mt-2 text-sm text-slatecopy">
-              Practical AI adoption for business teams
+              Operational excellence, powered by practical AI.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-medium text-slatecopy">
@@ -662,7 +662,7 @@ export default function Home() {
             </a>
           </div>
           <p className="text-sm text-slatecopy">
-            © {new Date().getFullYear()} Zara AI Training & Automation
+            © {new Date().getFullYear()} Arete Systems
           </p>
         </div>
       </footer>

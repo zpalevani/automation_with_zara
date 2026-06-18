@@ -546,7 +546,7 @@ export default function Home() {
             title="Built for business teams that need better execution."
             copy="Arete Systems works best with teams responsible for client experience, revenue operations, delivery quality, internal process, and team enablement."
           />
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {teamTypes.map((team) => (
               <div
                 key={team}

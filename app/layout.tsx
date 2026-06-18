@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Training & Automation Services for Business Teams | Arete Systems",
+  title: "Arete Systems | AI Workflow Automation for Business Operations Teams",
   description:
-    "Operational excellence, powered by practical AI. AI training, workflow automation, and enablement for leaders and teams who want better business systems.",
+    "Arete Systems helps business, client success, sales operations, and delivery teams turn AI into practical workflows, stronger execution, and repeatable operating systems.",
 };
 
 export default function RootLayout({

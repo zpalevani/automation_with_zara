@@ -1,3 +1,5 @@
+import ContactForm from "./ContactForm";
+
 const navItems = [
   { label: "Services", href: "#services" },
   { label: "Method", href: "#method" },
@@ -837,92 +839,7 @@ export default function Home() {
             title="Let's find the workflow worth fixing first."
             copy="Use the form below to share what your team is trying to improve."
           />
-          <form action="#contact" className="grid gap-5 rounded-3xl bg-white p-6 shadow-soft">
-            <div className="grid gap-5 sm:grid-cols-2">
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Name
-                <input
-                  name="name"
-                  type="text"
-                  className="min-h-12 rounded-2xl border border-navy/15 px-4 text-base font-normal text-navy"
-                />
-              </label>
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Email
-                <input
-                  name="email"
-                  type="email"
-                  className="min-h-12 rounded-2xl border border-navy/15 px-4 text-base font-normal text-navy"
-                />
-              </label>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-2">
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Company
-                <input
-                  name="company"
-                  type="text"
-                  className="min-h-12 rounded-2xl border border-navy/15 px-4 text-base font-normal text-navy"
-                />
-              </label>
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Role
-                <input
-                  name="role"
-                  type="text"
-                  className="min-h-12 rounded-2xl border border-navy/15 px-4 text-base font-normal text-navy"
-                />
-              </label>
-            </div>
-            <label className="grid gap-2 text-sm font-semibold text-navy">
-              Team type
-              <select
-                name="team-type"
-                className="min-h-12 rounded-2xl border border-navy/15 px-4 text-base font-normal text-navy"
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Select a team type
-                </option>
-                <option>Client success</option>
-                <option>Sales operations</option>
-                <option>Business operations</option>
-                <option>Consulting or delivery</option>
-                <option>Enablement or onboarding</option>
-                <option>Leadership team</option>
-              </select>
-            </label>
-            <label className="grid gap-2 text-sm font-semibold text-navy">
-              What workflow do you want to improve?
-              <textarea
-                name="workflow"
-                rows={4}
-                className="rounded-2xl border border-navy/15 px-4 py-3 text-base font-normal text-navy"
-              />
-            </label>
-            <label className="grid gap-2 text-sm font-semibold text-navy">
-              What is currently slow, manual, or inconsistent?
-              <textarea
-                name="friction"
-                rows={4}
-                className="rounded-2xl border border-navy/15 px-4 py-3 text-base font-normal text-navy"
-              />
-            </label>
-            <label className="grid gap-2 text-sm font-semibold text-navy">
-              Are you looking for an audit, workflow sprint, training, or advisory support?
-              <textarea
-                name="support-type"
-                rows={3}
-                className="rounded-2xl border border-navy/15 px-4 py-3 text-base font-normal text-navy"
-              />
-            </label>
-            <button
-              type="submit"
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-royal px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-blue-700 focus-visible:bg-blue-700"
-            >
-              Request a Strategy Call
-            </button>
-          </form>
+          <ContactForm />
         </div>
       </section>
 

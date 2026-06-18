@@ -578,31 +578,31 @@ export default function Home() {
       <section id="services" className="px-5 py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <SectionIntro title="Services" />
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {services.map((service) => (
+          <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
+            {services.map((service, index) => (
               <article
                 key={service.title}
-                className={`rounded-3xl border p-7 shadow-crisp transition hover:-translate-y-1 hover:shadow-soft ${
+                className={`flex h-full flex-col rounded-3xl border p-7 shadow-crisp transition hover:-translate-y-1 hover:shadow-soft ${
                   service.featured
                     ? "border-royal bg-white"
                     : "border-navy/10 bg-white"
                 }`}
               >
-                {service.featured ? (
-                  <p className="mb-5 inline-flex rounded-full bg-royal/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-royal">
-                    Core workflow sprint
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-royal">
+                  Service 0{index + 1}
+                </p>
+                <div className="mt-5 lg:min-h-[13rem]">
+                  <h3 className="text-2xl font-semibold leading-tight text-navy">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 text-lg font-semibold leading-7 text-royal">
+                    {service.subtitle}
                   </p>
-                ) : null}
-                <h3 className="text-2xl font-semibold text-navy">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-lg font-semibold leading-7 text-royal">
-                  {service.subtitle}
-                </p>
-                <p className="mt-4 leading-7 text-slatecopy">
-                  {service.description}
-                </p>
-                <dl className="mt-6 rounded-2xl bg-ivory p-5">
+                  <p className="mt-4 leading-7 text-slatecopy">
+                    {service.description}
+                  </p>
+                </div>
+                <dl className="mt-6 rounded-2xl bg-ivory p-5 lg:min-h-[8.5rem]">
                   <dt className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">
                     Best for
                   </dt>
@@ -647,15 +647,17 @@ export default function Home() {
                     </ul>
                   </div>
                 ) : null}
-                <p className="mt-6 rounded-2xl border border-navy/10 p-5 text-sm font-semibold leading-6 text-navy">
-                  Outcome: {service.outcome}
-                </p>
-                <a
-                  href="#contact"
-                  className="mt-7 inline-flex min-h-11 items-center justify-center rounded-full border border-royal px-5 py-3 text-sm font-semibold text-royal transition hover:bg-royal hover:text-white"
-                >
-                  {service.cta}
-                </a>
+                <div className="mt-auto pt-6">
+                  <p className="rounded-2xl border border-navy/10 p-5 text-sm font-semibold leading-6 text-navy">
+                    Outcome: {service.outcome}
+                  </p>
+                  <a
+                    href="#contact"
+                    className="mt-7 inline-flex min-h-11 w-full items-center justify-center rounded-full border border-royal px-5 py-3 text-sm font-semibold text-royal transition hover:bg-royal hover:text-white"
+                  >
+                    {service.cta}
+                  </a>
+                </div>
               </article>
             ))}
           </div>

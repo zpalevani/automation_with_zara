@@ -34,7 +34,6 @@ const teamTypes = [
   "Client success",
   "Sales operations",
   "Business operations",
-  "Account management",
   "Consulting and delivery",
   "Enablement and onboarding",
   "Small leadership teams trying to scale execution",
@@ -69,20 +68,8 @@ const services = [
       "A practical sprint to map, redesign, and package one repeated workflow so the team can use AI with consistency and accountability.",
     bestFor:
       "Teams with a repeated process that is slow, manual, inconsistent, or too dependent on individual habits.",
-    listTitle: "Example workflows",
+    listTitle: "What you get",
     items: [
-      "Client meeting preparation",
-      "Follow-up and recap creation",
-      "Account planning",
-      "Renewal risk review",
-      "Proposal preparation",
-      "Executive briefing creation",
-      "Onboarding and handoff workflows",
-      "Internal knowledge retrieval",
-      "SOP and playbook creation",
-    ],
-    secondaryTitle: "What you get",
-    secondaryItems: [
       "Workflow map",
       "AI-assisted process design",
       "Prompt library",
@@ -578,20 +565,17 @@ export default function Home() {
       <section id="services" className="px-5 py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <SectionIntro title="Services" />
-          <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
-            {services.map((service, index) => (
+          <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-2 xl:grid-cols-4">
+            {services.map((service) => (
               <article
                 key={service.title}
-                className={`flex h-full flex-col rounded-3xl border p-7 shadow-crisp transition hover:-translate-y-1 hover:shadow-soft ${
+                className={`flex h-full flex-col rounded-3xl border p-6 shadow-crisp transition hover:-translate-y-1 hover:shadow-soft ${
                   service.featured
                     ? "border-royal bg-white"
                     : "border-navy/10 bg-white"
                 }`}
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-royal">
-                  Service 0{index + 1}
-                </p>
-                <div className="mt-5 lg:min-h-[13rem]">
+                <div className="lg:min-h-[13rem] xl:min-h-[21rem]">
                   <h3 className="text-2xl font-semibold leading-tight text-navy">
                     {service.title}
                   </h3>
@@ -614,7 +598,7 @@ export default function Home() {
                   <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">
                     {service.listTitle}
                   </h4>
-                  <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                     {service.items.map((item) => (
                       <li key={item} className="flex gap-3 text-sm text-slatecopy">
                         <span
@@ -626,27 +610,6 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-                {service.secondaryItems ? (
-                  <div className="mt-6">
-                    <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">
-                      {service.secondaryTitle}
-                    </h4>
-                    <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                      {service.secondaryItems.map((item) => (
-                        <li
-                          key={item}
-                          className="flex gap-3 text-sm text-slatecopy"
-                        >
-                          <span
-                            aria-hidden="true"
-                            className="mt-2 h-2 w-2 shrink-0 rounded-full bg-gold"
-                          />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
                 <div className="mt-auto pt-6">
                   <p className="rounded-2xl border border-navy/10 p-5 text-sm font-semibold leading-6 text-navy">
                     Outcome: {service.outcome}

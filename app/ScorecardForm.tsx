@@ -11,6 +11,8 @@ type Result = {
   workflow: string;
 };
 
+type AnswerMap = Record<string, string>;
+
 const approvedTeamTypes = [
   "Client Success",
   "Sales Operations",
@@ -261,10 +263,14 @@ function validateLeadFields(formData: FormData) {
 }
 
 export default function ScorecardForm() {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<AnswerMap>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [result, setResult] = useState<Result | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const activeQuestion = questions[currentQuestionIndex];
+  const isFinalQuestion = currentQuestionIndex === questions.length - 1;
 
   useEffect(() => {
     if (result) {
@@ -275,9 +281,42 @@ export default function ScorecardForm() {
 
   function handleReset() {
     formRef.current?.reset();
+    setCurrentQuestionIndex(0);
+    setAnswers({});
     setErrors({});
     setResult(null);
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function handleAnswerChange(questionId: string, value: string) {
+    if (!isAllowedAnswer(questionId, value)) {
+      return;
+    }
+
+    setAnswers((currentAnswers) => ({
+      ...currentAnswers,
+      [questionId]: value,
+    }));
+    setErrors((currentErrors) => {
+      const nextErrors = { ...currentErrors };
+      delete nextErrors[questionId];
+      return nextErrors;
+    });
+    setResult(null);
+
+    if (!isFinalQuestion) {
+      window.setTimeout(() => {
+        setCurrentQuestionIndex((index) =>
+          Math.min(index + 1, questions.length - 1),
+        );
+      }, 180);
+    }
+  }
+
+  function handleBack() {
+    setErrors({});
+    setResult(null);
+    setCurrentQuestionIndex((index) => Math.max(index - 1, 0));
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -287,7 +326,7 @@ export default function ScorecardForm() {
     const questionErrors: Record<string, string> = {};
 
     for (const questionId of questionIds) {
-      if (!isAllowedAnswer(questionId, formData.get(questionId))) {
+      if (!isAllowedAnswer(questionId, answers[questionId] ?? null)) {
         questionErrors[questionId] = "Select one answer.";
       }
     }
@@ -296,12 +335,18 @@ export default function ScorecardForm() {
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
+      const firstQuestionError = questionIds.find(
+        (questionId) => nextErrors[questionId],
+      );
+      if (firstQuestionError) {
+        setCurrentQuestionIndex(questionIds.indexOf(firstQuestionError));
+      }
       setResult(null);
       return;
     }
 
     const score = questions.reduce((total, question) => {
-      const value = formData.get(question.id);
+      const value = answers[question.id];
       if (!isAllowedAnswer(question.id, value)) {
         return total;
       }
@@ -327,8 +372,10 @@ export default function ScorecardForm() {
             Scorecard form
           </p>
           <p className="mt-3 text-base leading-7 text-slatecopy">
-            Choose one workflow your team does often, then answer the questions
-            below.
+            This form helps you assess one repeated workflow, calculate its AI
+            readiness score, and see the most practical next step. Your score is
+            calculated in your browser and the scorecard does not submit your
+            details anywhere.
           </p>
         </div>
 
@@ -438,44 +485,38 @@ export default function ScorecardForm() {
           </div>
         </fieldset>
 
-        <fieldset className="grid gap-5">
-          <legend className="text-lg font-semibold text-navy">
-            Assessment questions
+        <fieldset className="rounded-3xl border border-navy/10 p-5">
+          <legend className="px-1 text-base font-semibold uppercase tracking-[0.16em] text-royal">
+            Question {currentQuestionIndex + 1} of {questions.length}
           </legend>
-          <div className="grid gap-5">
-            {questions.map((question, index) => (
-              <fieldset
-                key={question.id}
-                className="rounded-3xl border border-navy/10 p-5"
+          <h3 className="mt-3 text-xl font-semibold leading-8 text-navy">
+            {activeQuestion.question}
+          </h3>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            {activeQuestion.options.map(([label, value]) => (
+              <label
+                key={`${activeQuestion.id}-${value}`}
+                className="flex cursor-pointer gap-3 rounded-2xl border border-navy/10 p-4 text-sm leading-6 text-slatecopy transition hover:border-royal/35 hover:text-navy"
               >
-                <legend className="px-1 text-base font-semibold leading-7 text-navy">
-                  {index + 1}. {question.question}
-                </legend>
-                <div className="mt-4 grid gap-3 md:grid-cols-2">
-                  {question.options.map(([label, value]) => (
-                    <label
-                      key={`${question.id}-${value}`}
-                      className="flex cursor-pointer gap-3 rounded-2xl border border-navy/10 p-4 text-sm leading-6 text-slatecopy transition hover:border-royal/35 hover:text-navy"
-                    >
-                      <input
-                        type="radio"
-                        name={question.id}
-                        value={value}
-                        required
-                        className="mt-1 h-4 w-4 shrink-0 accent-royal"
-                      />
-                      <span>{label}</span>
-                    </label>
-                  ))}
-                </div>
-                {errors[question.id] ? (
-                  <p role="alert" className="mt-4 text-sm font-semibold text-red-700">
-                    {errors[question.id]}
-                  </p>
-                ) : null}
-              </fieldset>
+                <input
+                  type="radio"
+                  name={activeQuestion.id}
+                  value={value}
+                  checked={answers[activeQuestion.id] === String(value)}
+                  onChange={() =>
+                    handleAnswerChange(activeQuestion.id, String(value))
+                  }
+                  className="mt-1 h-4 w-4 shrink-0 accent-royal"
+                />
+                <span>{label}</span>
+              </label>
             ))}
           </div>
+          {errors[activeQuestion.id] ? (
+            <p role="alert" className="mt-4 text-sm font-semibold text-red-700">
+              {errors[activeQuestion.id]}
+            </p>
+          ) : null}
         </fieldset>
 
         {Object.keys(errors).length > 0 ? (
@@ -485,6 +526,15 @@ export default function ScorecardForm() {
         ) : null}
 
         <div className="flex flex-col gap-3 sm:flex-row">
+          {currentQuestionIndex > 0 ? (
+            <button
+              type="button"
+              onClick={handleBack}
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-navy/15 px-6 py-3 text-sm font-semibold text-navy transition hover:border-royal hover:text-royal"
+            >
+              Back
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={handleReset}
@@ -492,12 +542,14 @@ export default function ScorecardForm() {
           >
             Reset
           </button>
-          <button
-            type="submit"
-            className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-royal px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-blue-700 focus-visible:bg-blue-700"
-          >
-            Calculate My Score
-          </button>
+          {isFinalQuestion ? (
+            <button
+              type="submit"
+              className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-royal px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-blue-700 focus-visible:bg-blue-700"
+            >
+              Calculate My Score
+            </button>
+          ) : null}
         </div>
       </form>
 

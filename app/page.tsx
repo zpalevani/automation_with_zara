@@ -538,8 +538,8 @@ export default function Home() {
       </section>
 
       <section id="scorecard" className="bg-mist px-5 py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
-          <div>
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-4xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-royal">
               Free AI Workflow Readiness Scorecard
             </p>
@@ -559,63 +559,67 @@ export default function Home() {
                 system.
               </p>
             </div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <PrimaryButton href="#scorecard">Take the Scorecard</PrimaryButton>
               <SecondaryButton href="#contact">Book an AI Clarity Session</SecondaryButton>
             </div>
+          </div>
 
-            <div className="mt-10 grid gap-6">
-              <div className="rounded-3xl bg-white p-6 shadow-crisp">
-                <h3 className="text-lg font-semibold text-navy">
-                  What you will learn
-                </h3>
-                <ul className="mt-4 grid gap-3">
-                  {scorecardLearnings.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6 text-slatecopy">
-                      <span
-                        aria-hidden="true"
-                        className="mt-2 h-2 w-2 shrink-0 rounded-full bg-royal"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="rounded-3xl bg-white p-6 shadow-crisp">
-                <h3 className="text-lg font-semibold text-navy">
-                  Best for assessing
-                </h3>
-                <ul className="mt-4 grid gap-3">
-                  {scorecardBestFor.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6 text-slatecopy">
-                      <span
-                        aria-hidden="true"
-                        className="mt-2 h-2 w-2 shrink-0 rounded-full bg-gold"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="rounded-3xl border border-navy/10 bg-white p-6">
-                <h3 className="text-lg font-semibold text-navy">
-                  Examples of workflows to assess
-                </h3>
-                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-                  {scorecardExamples.map((item) => (
-                    <li key={item} className="text-sm leading-6 text-slatecopy">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="rounded-3xl bg-navy p-6 text-sm font-semibold leading-7 text-white">
-                No hype. No generic prompt pack. Just a practical way to
-                identify where AI can improve real work.
-              </p>
+          <div className="mx-auto mt-10 grid max-w-5xl gap-6 lg:grid-cols-3">
+            <div className="rounded-3xl bg-white p-6 shadow-crisp">
+              <h3 className="text-lg font-semibold text-navy">
+                What you will learn
+              </h3>
+              <ul className="mt-4 grid gap-3">
+                {scorecardLearnings.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-slatecopy">
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 h-2 w-2 shrink-0 rounded-full bg-royal"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-3xl bg-white p-6 shadow-crisp">
+              <h3 className="text-lg font-semibold text-navy">
+                Best for assessing
+              </h3>
+              <ul className="mt-4 grid gap-3">
+                {scorecardBestFor.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-slatecopy">
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 h-2 w-2 shrink-0 rounded-full bg-gold"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-3xl border border-navy/10 bg-white p-6">
+              <h3 className="text-lg font-semibold text-navy">
+                Examples of workflows to assess
+              </h3>
+              <ul className="mt-4 grid gap-2">
+                {scorecardExamples.map((item) => (
+                  <li key={item} className="text-sm leading-6 text-slatecopy">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-          <ScorecardForm />
+
+          <p className="mx-auto mt-6 max-w-5xl rounded-3xl bg-navy p-6 text-center text-sm font-semibold leading-7 text-white">
+            No hype. No generic prompt pack. Just a practical way to identify
+            where AI can improve real work.
+          </p>
+
+          <div className="mt-10">
+            <ScorecardForm />
+          </div>
         </div>
       </section>
 

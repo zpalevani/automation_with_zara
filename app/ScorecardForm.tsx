@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 type Result = {
   score: number;
@@ -147,7 +147,11 @@ function normalizePlainText(value: FormDataEntryValue | null, maxLength: number)
     return "";
   }
 
-  return value.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, maxLength);
+  return value
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
 }
 
 function getScoreResult(score: number, teamType: string, workflow: string): Result {
@@ -257,19 +261,10 @@ function validateLeadFields(formData: FormData) {
 }
 
 export default function ScorecardForm() {
-  const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [result, setResult] = useState<Result | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
-  const stepRef = useRef<HTMLDivElement>(null);
-
-  const progressLabel = useMemo(() => {
-    if (step === 0) {
-      return "Lead information";
-    }
-
-    return `Question ${step} of ${questions.length}`;
-  }, [step]);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (result) {
@@ -278,64 +273,16 @@ export default function ScorecardForm() {
     }
   }, [result]);
 
-  useEffect(() => {
-    if (!result) {
-      stepRef.current?.focus();
-    }
-  }, [step, result]);
-
-  function validateCurrentStep(form: HTMLFormElement) {
-    const formData = new FormData(form);
-    if (step === 0) {
-      const validation = validateLeadFields(formData);
-      setErrors(validation.errors);
-      return Object.keys(validation.errors).length === 0;
-    }
-
-    const question = questions[step - 1];
-    const value = formData.get(question.id);
-
-    if (!isAllowedAnswer(question.id, value)) {
-      setErrors({ [question.id]: "Select one answer before continuing." });
-      return false;
-    }
-
-    setErrors({});
-    return true;
-  }
-
-  function handleNext(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-
-    if (!validateCurrentStep(form)) {
-      return;
-    }
-
-    setResult(null);
-    setStep((currentStep) => Math.min(currentStep + 1, questions.length));
-  }
-
-  function handleBack() {
+  function handleReset() {
+    formRef.current?.reset();
     setErrors({});
     setResult(null);
-    setStep((currentStep) => Math.max(currentStep - 1, 0));
-  }
-
-  function handleRadioChange() {
-    setErrors({});
-
-    if (step > 0 && step < questions.length) {
-      window.setTimeout(() => {
-        setStep((currentStep) => Math.min(currentStep + 1, questions.length));
-      }, 180);
-    }
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(event.currentTarget);
     const leadValidation = validateLeadFields(formData);
     const questionErrors: Record<string, string> = {};
 
@@ -349,8 +296,7 @@ export default function ScorecardForm() {
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
-      const firstQuestionError = questionIds.find((questionId) => nextErrors[questionId]);
-      setStep(firstQuestionError ? questionIds.indexOf(firstQuestionError) + 1 : 0);
+      setResult(null);
       return;
     }
 
@@ -363,25 +309,22 @@ export default function ScorecardForm() {
       return total + Number(value);
     }, 0);
 
+    setErrors({});
     // TODO: Connect this form to a secure lead capture service such as Formspree, HubSpot, ConvertKit, Airtable, or a custom backend.
     setResult(getScoreResult(score, leadValidation.teamType, leadValidation.workflow));
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="mx-auto grid w-full max-w-5xl gap-6">
       <form
-        onSubmit={step === questions.length ? handleSubmit : handleNext}
+        ref={formRef}
+        onSubmit={handleSubmit}
         noValidate
-        className="grid gap-6 rounded-3xl bg-white p-6 shadow-soft"
+        className="grid gap-7 rounded-3xl bg-white p-6 shadow-soft md:p-8"
       >
-        <div
-          ref={stepRef}
-          tabIndex={-1}
-          className="outline-none"
-          aria-live="polite"
-        >
+        <div>
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-royal">
-            {progressLabel}
+            Scorecard form
           </p>
           <p className="mt-3 text-base leading-7 text-slatecopy">
             Choose one workflow your team does often, then answer the questions
@@ -389,69 +332,68 @@ export default function ScorecardForm() {
           </p>
         </div>
 
-        <fieldset className={step === 0 ? "grid gap-5" : "hidden"}>
-            <legend className="text-lg font-semibold text-navy">
-              Lead information
-            </legend>
-            <div className="grid gap-5 sm:grid-cols-2">
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Full name
-                <input
-                  name="name"
-                  type="text"
-                  required
-                  maxLength={100}
-                  autoComplete="name"
-                  className={fieldClass}
-                  aria-describedby={errors.name ? "scorecard-name-error" : undefined}
-                />
-                {errors.name ? (
-                  <span id="scorecard-name-error" className="text-sm font-semibold text-red-700">
-                    {errors.name}
-                  </span>
-                ) : null}
-              </label>
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Email
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  maxLength={254}
-                  pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
-                  autoComplete="email"
-                  className={fieldClass}
-                  aria-describedby={errors.email ? "scorecard-email-error" : undefined}
-                />
-                {errors.email ? (
-                  <span id="scorecard-email-error" className="text-sm font-semibold text-red-700">
-                    {errors.email}
-                  </span>
-                ) : null}
-              </label>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-2">
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Company <span className="font-normal text-slatecopy">(optional)</span>
-                <input
-                  name="company"
-                  type="text"
-                  maxLength={120}
-                  autoComplete="organization"
-                  className={fieldClass}
-                />
-              </label>
-              <label className="grid gap-2 text-sm font-semibold text-navy">
-                Role <span className="font-normal text-slatecopy">(optional)</span>
-                <input
-                  name="role"
-                  type="text"
-                  maxLength={120}
-                  autoComplete="organization-title"
-                  className={fieldClass}
-                />
-              </label>
-            </div>
+        <fieldset className="grid gap-5">
+          <legend className="sr-only">Contact and workflow details</legend>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="grid gap-2 text-sm font-semibold text-navy">
+              Full name
+              <input
+                name="name"
+                type="text"
+                required
+                maxLength={100}
+                autoComplete="name"
+                className={fieldClass}
+                aria-describedby={errors.name ? "scorecard-name-error" : undefined}
+              />
+              {errors.name ? (
+                <span id="scorecard-name-error" className="text-sm font-semibold text-red-700">
+                  {errors.name}
+                </span>
+              ) : null}
+            </label>
+            <label className="grid gap-2 text-sm font-semibold text-navy">
+              Email
+              <input
+                name="email"
+                type="email"
+                required
+                maxLength={254}
+                pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                autoComplete="email"
+                className={fieldClass}
+                aria-describedby={errors.email ? "scorecard-email-error" : undefined}
+              />
+              {errors.email ? (
+                <span id="scorecard-email-error" className="text-sm font-semibold text-red-700">
+                  {errors.email}
+                </span>
+              ) : null}
+            </label>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="grid gap-2 text-sm font-semibold text-navy">
+              Company <span className="font-normal text-slatecopy">(optional)</span>
+              <input
+                name="company"
+                type="text"
+                maxLength={120}
+                autoComplete="organization"
+                className={fieldClass}
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-semibold text-navy">
+              Role <span className="font-normal text-slatecopy">(optional)</span>
+              <input
+                name="role"
+                type="text"
+                maxLength={120}
+                autoComplete="organization-title"
+                className={fieldClass}
+              />
+            </label>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
             <label className="grid gap-2 text-sm font-semibold text-navy">
               Team type
               <select
@@ -481,7 +423,7 @@ export default function ScorecardForm() {
                 type="text"
                 required
                 maxLength={200}
-                placeholder="Example: Client meeting prep, renewal review, proposal handoff, weekly reporting"
+                placeholder="Example: Client meeting prep"
                 className={fieldClass}
                 aria-describedby={
                   errors["workflow-to-assess"] ? "scorecard-workflow-error" : undefined
@@ -493,61 +435,68 @@ export default function ScorecardForm() {
                 </span>
               ) : null}
             </label>
-          </fieldset>
+          </div>
+        </fieldset>
 
-        {questions.map((question, index) => (
-          <fieldset
-            key={question.id}
-            className={
-              step === index + 1
-                ? "rounded-3xl border border-navy/10 p-5"
-                : "hidden"
-            }
-          >
-            <legend className="px-1 text-lg font-semibold leading-7 text-navy">
-              {index + 1}. {question.question}
-            </legend>
-            <div className="mt-4 grid gap-3">
-              {question.options.map(([label, value]) => (
-                <label
-                  key={`${question.id}-${value}`}
-                  className="flex cursor-pointer gap-3 rounded-2xl border border-navy/10 p-4 text-sm leading-6 text-slatecopy transition hover:border-royal/35 hover:text-navy"
-                >
-                  <input
-                    type="radio"
-                    name={question.id}
-                    value={value}
-                    required
-                    onChange={handleRadioChange}
-                    className="mt-1 h-4 w-4 shrink-0 accent-royal"
-                  />
-                  <span>{label}</span>
-                </label>
-              ))}
-            </div>
-            {errors[question.id] ? (
-              <p role="alert" className="mt-4 text-sm font-semibold text-red-700">
-                {errors[question.id]}
-              </p>
-            ) : null}
-          </fieldset>
-        ))}
+        <fieldset className="grid gap-5">
+          <legend className="text-lg font-semibold text-navy">
+            Assessment questions
+          </legend>
+          <div className="grid gap-5">
+            {questions.map((question, index) => (
+              <fieldset
+                key={question.id}
+                className="rounded-3xl border border-navy/10 p-5"
+              >
+                <legend className="px-1 text-base font-semibold leading-7 text-navy">
+                  {index + 1}. {question.question}
+                </legend>
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  {question.options.map(([label, value]) => (
+                    <label
+                      key={`${question.id}-${value}`}
+                      className="flex cursor-pointer gap-3 rounded-2xl border border-navy/10 p-4 text-sm leading-6 text-slatecopy transition hover:border-royal/35 hover:text-navy"
+                    >
+                      <input
+                        type="radio"
+                        name={question.id}
+                        value={value}
+                        required
+                        className="mt-1 h-4 w-4 shrink-0 accent-royal"
+                      />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors[question.id] ? (
+                  <p role="alert" className="mt-4 text-sm font-semibold text-red-700">
+                    {errors[question.id]}
+                  </p>
+                ) : null}
+              </fieldset>
+            ))}
+          </div>
+        </fieldset>
+
+        {Object.keys(errors).length > 0 ? (
+          <p role="alert" className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
+            Please complete the required fields and questions before calculating your score.
+          </p>
+        ) : null}
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          {step > 0 ? (
-            <button
-              type="button"
-              onClick={handleBack}
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-navy/15 px-6 py-3 text-sm font-semibold text-navy transition hover:border-royal hover:text-royal"
-            >
-              Back
-            </button>
-          ) : null}
+          <button
+            type="button"
+            onClick={handleReset}
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-navy/15 px-6 py-3 text-sm font-semibold text-navy transition hover:border-royal hover:text-royal"
+          >
+            Reset
+          </button>
           <button
             type="submit"
             className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-royal px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-blue-700 focus-visible:bg-blue-700"
           >
-            {step === questions.length ? "Calculate My Score" : "Next"}
+            Calculate My Score
           </button>
         </div>
       </form>

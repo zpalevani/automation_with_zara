@@ -1,6 +1,8 @@
 import ContactForm from "./ContactForm";
+import ScorecardForm from "./ScorecardForm";
 
 const navItems = [
+  { label: "Scorecard", href: "#scorecard" },
   { label: "Services", href: "#services" },
   { label: "Method", href: "#method" },
   { label: "Use Cases", href: "#use-cases" },
@@ -21,6 +23,33 @@ const valueProps = [
     title: "Built for non-technical teams",
     copy: "Workflow systems your team can understand, use, and improve.",
   },
+];
+
+const scorecardExamples = [
+  "Client meeting preparation",
+  "Follow-up and recap creation",
+  "Account planning",
+  "Renewal risk review",
+  "Proposal preparation",
+  "Internal reporting",
+  "SOP creation",
+  "Onboarding or handoff process",
+  "Executive briefing creation",
+];
+
+const scorecardLearnings = [
+  "Whether the workflow is ready for AI support",
+  "Where manual effort is creating drag",
+  "Whether the process has enough structure for automation",
+  "What the best next step should be",
+];
+
+const scorecardBestFor = [
+  "Repeated admin-heavy workflows",
+  "Client-facing workflows",
+  "Internal reporting workflows",
+  "Sales or customer success handoffs",
+  "SOP, onboarding, and knowledge workflows",
 ];
 
 const operationalPatterns = [
@@ -486,6 +515,7 @@ export default function Home() {
             </div>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <PrimaryButton>Book a Strategy Call</PrimaryButton>
+              <SecondaryButton href="#scorecard">Take the Scorecard</SecondaryButton>
               <SecondaryButton href="#services">Explore Services</SecondaryButton>
             </div>
           </div>
@@ -504,6 +534,88 @@ export default function Home() {
               <p className="mt-2 text-sm leading-6 text-slatecopy">{item.copy}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section id="scorecard" className="bg-mist px-5 py-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-royal">
+              Free AI Workflow Readiness Scorecard
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight text-navy md:text-5xl">
+              Find the workflow your team should improve with AI first.
+            </h2>
+            <div className="mt-5 space-y-4 text-lg leading-8 text-slatecopy">
+              <p>
+                Not every workflow is ready for AI. The best starting point is
+                usually a process that is repeated often, takes too much manual
+                effort, creates inconsistent output, or depends on scattered
+                knowledge.
+              </p>
+              <p>
+                Use this 10-minute scorecard to assess one workflow and see
+                whether it is a strong candidate for an AI-assisted operating
+                system.
+              </p>
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <PrimaryButton href="#scorecard">Take the Scorecard</PrimaryButton>
+              <SecondaryButton href="#contact">Book an AI Clarity Session</SecondaryButton>
+            </div>
+
+            <div className="mt-10 grid gap-6">
+              <div className="rounded-3xl bg-white p-6 shadow-crisp">
+                <h3 className="text-lg font-semibold text-navy">
+                  What you will learn
+                </h3>
+                <ul className="mt-4 grid gap-3">
+                  {scorecardLearnings.map((item) => (
+                    <li key={item} className="flex gap-3 text-sm leading-6 text-slatecopy">
+                      <span
+                        aria-hidden="true"
+                        className="mt-2 h-2 w-2 shrink-0 rounded-full bg-royal"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-3xl bg-white p-6 shadow-crisp">
+                <h3 className="text-lg font-semibold text-navy">
+                  Best for assessing
+                </h3>
+                <ul className="mt-4 grid gap-3">
+                  {scorecardBestFor.map((item) => (
+                    <li key={item} className="flex gap-3 text-sm leading-6 text-slatecopy">
+                      <span
+                        aria-hidden="true"
+                        className="mt-2 h-2 w-2 shrink-0 rounded-full bg-gold"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-3xl border border-navy/10 bg-white p-6">
+                <h3 className="text-lg font-semibold text-navy">
+                  Examples of workflows to assess
+                </h3>
+                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                  {scorecardExamples.map((item) => (
+                    <li key={item} className="text-sm leading-6 text-slatecopy">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="rounded-3xl bg-navy p-6 text-sm font-semibold leading-7 text-white">
+                No hype. No generic prompt pack. Just a practical way to
+                identify where AI can improve real work.
+              </p>
+            </div>
+          </div>
+          <ScorecardForm />
         </div>
       </section>
 

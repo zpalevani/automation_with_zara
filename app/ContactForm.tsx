@@ -1,8 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-
-const formEndpoint = "https://formsubmit.co/ajax/zpalevani@gmail.com";
+import { formEndpoint } from "./formConfig";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
